@@ -24,6 +24,7 @@ function App() {
     axios
       .get(`${base_url}/getUsers`)
       .then((res) => {
+        console.log("Response data:", res.data);
         setRecordData(res.data);
       })
       .catch((err) => alert(`Some error occured ==>${err}`));
@@ -49,7 +50,7 @@ function App() {
     <div className="App">
       <nav className="navbar navbar-light bg-light mb-2">
         <a
-          class="navbar-brand"
+          className="navbar-brand"
           href="https://www.youtube.com/@IntegrationNinjas"
         >
           <img
@@ -68,13 +69,13 @@ function App() {
             <h3 className="text-center">Users List</h3>
             <ul>
               {recordData.map((r, i) => (
-                <tl key={i}>
+                <div key={i}>
                   <DetailsCardComponent
                     email={r.email}
                     sn={i + 1}
                     userN={r.name}
                   />
-                </tl>
+                </div>
               ))}
             </ul>
           </div>
