@@ -90,7 +90,7 @@ function App() {
                   id="exampleInputUser"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Enter user name"
+                  placeholder="Enter user name here"
                 />
               </div>
               <div className="form-group">
