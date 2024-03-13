@@ -30,24 +30,24 @@ function App() {
   //     .catch((err) => alert(`Some error occured ==>${err}`));
   // }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${base_url}/getUsers`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`${base_url}/getUsers`);
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
 
-        const data = await response.json();
-        console.log("Response data:", data);
-        setRecordData(data);
-      } catch (err) {
-        alert(`Some error occurred ==> ${err.message}`);
-      }
-    };
+  //       const data = await response.json();
+  //       console.log("Response data:", data);
+  //       setRecordData(data);
+  //     } catch (err) {
+  //       alert(`Some error occurred ==> ${err.message}`);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
