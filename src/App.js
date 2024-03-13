@@ -20,15 +20,15 @@ function App() {
       ? process.env.REACT_APP_LOCAL_BASE_URL
       : process.env.REACT_APP_SERVER_BASE_URL;
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${base_url}/getUsers`)
-  //     .then((res) => {
-  //       console.log("Response data:", res.data);
-  //       setRecordData(res.data);
-  //     })
-  //     .catch((err) => alert(`Some error occured ==>${err}`));
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`${base_url}/getUsers`)
+      .then((res) => {
+        console.log("Response data:", res.data);
+        setRecordData(res.data);
+      })
+      .catch((err) => alert(`Some error occured ==>${err}`));
+  }, []);
 
   // useEffect(() => {
   //   const fetchData = async () => {
