@@ -15,10 +15,10 @@ function App() {
     "process.env.REACT_APP_SERVER_BASE_URL:",
     process.env.REACT_APP_SERVER_BASE_URL
   );
-  const base_url =
-    process.env.REACT_APP_NODE_ENV === "development"
-      ? process.env.REACT_APP_LOCAL_BASE_URL
-      : process.env.REACT_APP_SERVER_BASE_URL;
+  const base_url = "http://localhost:4000";
+  // process.env.REACT_APP_NODE_ENV === "development"
+  //   ? process.env.REACT_APP_LOCAL_BASE_URL
+  //   : process.env.REACT_APP_SERVER_BASE_URL;
 
   useEffect(() => {
     axios
