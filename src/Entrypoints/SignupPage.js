@@ -72,7 +72,7 @@ function SignUp({ change }) {
             break;
         }
       } catch (error) {
-        console.error("Error sending data:", error);
+        console.log("Error sending data:", error);
       }
     },
   });
