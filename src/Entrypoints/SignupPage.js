@@ -57,9 +57,9 @@ function SignUp({ change }) {
       console.log(values);
 
       axios
-        .post(`${base_url}/users`, data)
+        .post(`${base_url}/users`, values)
         .then((res) => {
-          setData({ email: "", password: "", confirmPassword: "" });
+          formik.resetForm();
           alert("User created successfully");
         })
         .catch((err) => alert(`Some error occurred ==> ${err.message}`));
