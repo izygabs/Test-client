@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 // import SignupAuthentication from "./VerificationPopup";
 
 function SignUp({ change }) {
   const [data, setData] = useState("");
   const [verify, setVerify] = useState(false);
+
+  const base_url =
+    process.env.REACT_APP_NODE_ENV === "development"
+      ? process.env.REACT_APP_LOCAL_BASE_URL
+      : process.env.REACT_APP_SERVER_BASE_URL;
 
   const mail = () => {
     setVerify(true);
@@ -40,41 +46,49 @@ function SignUp({ change }) {
     onSubmit: async (values) => {
       console.log(values);
 
-      try {
-        const response = await fetch("/api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        });
-
-        const result = await response.json();
-        switch (response.status) {
-          case 201:
-            setData(result.message);
-            mail();
-            break;
-          case 400:
-            setData(result.message);
-            break;
-          case 403:
-            setData(result.message);
-            break;
-          case 409:
-            setData(result.message);
-            break;
-          case 500:
-            setData(result.message);
-            break;
-          default:
-            setData("An error occurred while processing your request.");
-            break;
-        }
-      } catch (error) {
-        console.log("Error sending data:", error);
-      }
+      axios
+        .post(`${base_url}/api/users`, data)
+        .then((res) => {
+          setData({ email: "", password: "", confirmPassword: "" });
+          alert("User created successfully");
+        })
+        .catch((err) => alert(`Some error occurred ==> ${err.message}`));
     },
+
+    // try {
+    //   const response = await fetch("/api/users", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(values),
+    //   });
+
+    //   const result = await response.json();
+    //   switch (response.status) {
+    //     case 201:
+    //       setData(result.message);
+    //       mail();
+    //       break;
+    //     case 400:
+    //       setData(result.message);
+    //       break;
+    //     case 403:
+    //       setData(result.message);
+    //       break;
+    //     case 409:
+    //       setData(result.message);
+    //       break;
+    //     case 500:
+    //       setData(result.message);
+    //       break;
+    //     default:
+    //       setData("An error occurred while processing your request.");
+    //       break;
+    //   }
+    // } catch (error) {
+    //   console.log("Error sending data:", error);
+    // }
   });
 
   return (
