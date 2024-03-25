@@ -57,7 +57,7 @@ function SignUp({ change }) {
       console.log(values);
 
       axios
-        .post(`${base_url}/api/users`, data)
+        .post(`${base_url}/users`, data)
         .then((res) => {
           setData({ email: "", password: "", confirmPassword: "" });
           alert("User created successfully");
