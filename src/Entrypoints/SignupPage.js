@@ -60,7 +60,7 @@ function SignUp({ change }) {
         .post(`${base_url}/users`, values)
         .then((res) => {
           formik.resetForm();
-          alert("User created successfully");
+          alert("User created successfully, Confirmation email sent!");
         })
         .catch((err) => alert(`Some error occurred ==> ${err.message}`));
     },

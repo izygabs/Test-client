@@ -5,6 +5,7 @@ import logo from "./images/bdmp.png";
 import { useState, useEffect } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import SignUp from "./SignupPage";
+import axios from "axios";
 // import RegistrationForm from "../components/RegistrationForm";
 // import EmailReset from "./EmailReset";
 
@@ -14,6 +15,21 @@ function Landing() {
   const [reg, setReg] = useState(false);
   const [reset, setReset] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  console.log("process.env:", process.env);
+  console.log(
+    "process.env.REACT_APP_NODE_ENV:",
+    process.env.REACT_APP_NODE_ENV
+  );
+  console.log(
+    "process.env.REACT_APP_SERVER_BASE_URL:",
+    process.env.REACT_APP_SERVER_BASE_URL
+  );
+
+  const base_url =
+    process.env.REACT_APP_NODE_ENV === "development"
+      ? process.env.REACT_APP_LOCAL_BASE_URL
+      : process.env.REACT_APP_SERVER_BASE_URL;
 
   const popsign = () => {
     setPopup(false);
@@ -67,8 +83,17 @@ function Landing() {
       password: Yup.string().required("Required"),
     }),
 
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      // alert(JSON.stringify(values, null, 2));
+      console.log(values);
+
+      axios
+        .post(`${base_url}/login`, values)
+        .then((res) => {
+          formik.resetForm();
+          alert("Welcome back User!");
+        })
+        .catch((err) => alert("Some error occurred"));
     },
   });
 
@@ -148,6 +173,8 @@ function Landing() {
           <div className="items-center">
             {/* <Link to={"/dashboard"}> */}
             <button
+              type="Submit"
+              onClick={formik.handleSubmit}
               // onClick={openSuccess}
               className="bg-[#0c7c3f] text-[white] h-10 w-[20rem] max-sm:w-[180px] text-xl font-medium rounded font-[serif] cursor-pointer border-[1px] border-[#d2dbef] hover:bg-[#d2dbef] hover:text-[black] hover:bg-opacity-15 "
             >
