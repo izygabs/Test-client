@@ -21,7 +21,7 @@ function EmailReset() {
       console.log(values);
 
       axios
-        .post(`${base_url}/resetPassword`, values)
+        .post(`${base_url}/resetEmail`, values)
         .then((res) => {
           formik.resetForm();
           alert("Reset password link sent to your email");
