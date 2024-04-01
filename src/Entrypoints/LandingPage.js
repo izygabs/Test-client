@@ -6,9 +6,8 @@ import { useState, useEffect } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import SignUp from "./SignupPage";
 import axios from "axios";
-import ResetPassword from "./ResetPassword";
 // import RegistrationForm from "../components/RegistrationForm";
-// import EmailReset from "./EmailReset";
+import EmailReset from "./EmailReset";
 
 function Landing() {
   const [popup, setPopup] = useState(false);
@@ -223,7 +222,7 @@ function Landing() {
       )}
       {signup && <SignUp change={change} />}
       {/* {success && <RegistrationForm />} */}
-      {reset && <ResetPassword />}
+      {reset && <EmailReset />}
     </div>
   );
 }
