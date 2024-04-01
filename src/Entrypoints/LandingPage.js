@@ -7,7 +7,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import SignUp from "./SignupPage";
 import axios from "axios";
 // import RegistrationForm from "../components/RegistrationForm";
-// import EmailReset from "./EmailReset";
+import EmailReset from "./EmailReset";
 
 function Landing() {
   const [popup, setPopup] = useState(false);
@@ -222,7 +222,7 @@ function Landing() {
       )}
       {signup && <SignUp change={change} />}
       {/* {success && <RegistrationForm />} */}
-      {/* {reset && <EmailReset />} */}
+      {reset && <EmailReset />}
     </div>
   );
 }
