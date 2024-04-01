@@ -1,8 +1,14 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 function EmailReset() {
+  const base_url =
+    process.env.REACT_APP_NODE_ENV === "development"
+      ? process.env.REACT_APP_LOCAL_BASE_URL
+      : process.env.REACT_APP_SERVER_BASE_URL;
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -11,7 +17,16 @@ function EmailReset() {
       email: Yup.string().email("Invalid email").required("Email is required"),
     }),
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
+      console.log(values);
+
+      axios
+        .post(`${base_url}/resetPassword`, values)
+        .then((res) => {
+          formik.resetForm();
+          alert("Reset password link sent to your email");
+        })
+        .catch((err) => alert("Some error occurred"));
     },
   });
 
@@ -43,7 +58,11 @@ function EmailReset() {
         </form>
       </div>
       <div className="pb-8">
-        <button className="bg-[#0c7c3f] text-[white] h-12 w-[20rem] text-md font-medium rounded font-asset cursor-pointer hover:bg-[#38454F] max-sm:w-60">
+        <button
+          type="Submit"
+          onClick={formik.handleSubmit}
+          className="bg-[#0c7c3f] text-[white] h-12 w-[20rem] text-md font-medium rounded font-asset cursor-pointer hover:bg-[#38454F] max-sm:w-60"
+        >
           Send
         </button>
       </div>
