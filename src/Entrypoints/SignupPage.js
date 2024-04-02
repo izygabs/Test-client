@@ -123,10 +123,7 @@ function SignUp({ change }) {
           NAIJA 01
         </h1>
         <div>
-          <form
-            // onSubmit={formik.handleSubmit}
-            className=" w-80 h-auto flex flex-col justify-between gap-8 "
-          >
+          <form className=" w-80 h-auto flex flex-col justify-between gap-8 ">
             <div>
               <input
                 className="h-10 px-3 py-2 bg-white border-2 border-[#0c7c3f] shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none placeholder:italic placeholder:text-base placeholder:text-[#565872]  placeholder:font-sans focus:border-sky-500 focus:ring-sky-500 block w-80 rounded sm:text-sm focus:ring-1 max-sm:w-60 max-sm:ml-10"
