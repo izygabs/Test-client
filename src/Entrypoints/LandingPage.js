@@ -15,6 +15,7 @@ function Landing() {
   const [reg, setReg] = useState(false);
   const [reset, setReset] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [statusMessages, setStatusMessages] = useState("");
 
   console.log("process.env:", process.env);
   console.log(
@@ -83,17 +84,37 @@ function Landing() {
       password: Yup.string().required("Required"),
     }),
 
+    // onSubmit: async (values) => {
+    //   // alert(JSON.stringify(values, null, 2));
+    //   console.log(values);
+
+    //   axios
+    //     .post(`${base_url}/login`, values)
+    //     .then((res) => {
+    //       formik.resetForm();
+    //       alert("Welcome back User!");
+    //     })
+    //     .catch((err) => alert("Some error occurred"));
+    // },
+
     onSubmit: async (values) => {
-      // alert(JSON.stringify(values, null, 2));
       console.log(values);
 
-      axios
-        .post(`${base_url}/login`, values)
-        .then((res) => {
+      try {
+        const response = await axios.post(`${base_url}/login`, values);
+        const responseData = response.data;
+        if (response.status === 200) {
           formik.resetForm();
-          alert("Welcome back User!");
-        })
-        .catch((err) => alert("Some error occurred"));
+          setStatusMessages(responseData.message);
+        } else if (response.status === 401) {
+          setStatusMessages(responseData.message);
+        } else if (response.status === 500) {
+          setStatusMessages(responseData.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setStatusMessages("An error occurred while processing your request.");
+      }
     },
   });
 
@@ -171,6 +192,11 @@ function Landing() {
             </div>
           </div>
           <div className="items-center">
+            {statusMessages && (
+              <p className="text-center text-xs text-[red] mb-5">
+                {statusMessages}
+              </p>
+            )}
             {/* <Link to={"/dashboard"}> */}
             <button
               type="Submit"

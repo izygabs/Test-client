@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
 function EmailReset() {
+  const [statusMessages, setStatusMessages] = useState("");
   const base_url =
     process.env.REACT_APP_NODE_ENV === "development"
       ? process.env.REACT_APP_LOCAL_BASE_URL
@@ -16,17 +17,37 @@ function EmailReset() {
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email").required("Email is required"),
     }),
-    onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
+    // onSubmit: (values) => {
+    //   console.log(values);
+
+    //   axios
+    //     .post(`${base_url}/resetEmail`, values)
+    //     .then((res) => {
+    //       formik.resetForm();
+    //       alert("Reset password link sent to your email");
+    //     })
+    //     .catch((err) => alert("Some error occurred"));
+    // },
+
+    onSubmit: async (values) => {
       console.log(values);
 
-      axios
-        .post(`${base_url}/resetEmail`, values)
-        .then((res) => {
+      try {
+        const response = await axios.post(`${base_url}/resetEmail`, values);
+        const responseData = response.data;
+
+        if (response.status === 200) {
           formik.resetForm();
-          alert("Reset password link sent to your email");
-        })
-        .catch((err) => alert("Some error occurred"));
+          setStatusMessages(responseData.message);
+        } else if (response.status === 404) {
+          setStatusMessages(responseData.message);
+        } else if (response.status === 500) {
+          setStatusMessages(responseData.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setStatusMessages("An error occurred while processing your request.");
+      }
     },
   });
 
@@ -58,6 +79,11 @@ function EmailReset() {
         </form>
       </div>
       <div className="pb-8">
+        {statusMessages && (
+          <p className="text-center text-xs text-[red] mb-5">
+            {statusMessages}
+          </p>
+        )}
         <button
           type="Submit"
           onClick={formik.handleSubmit}

@@ -6,7 +6,8 @@ import axios from "axios";
 // import SignupAuthentication from "./VerificationPopup";
 
 function SignUp({ change }) {
-  const [data, setData] = useState("");
+  // const [data, setData] = useState("");
+  const [statusMessages, setStatusMessages] = useState("");
   const [verify, setVerify] = useState(false);
 
   console.log("process.env:", process.env);
@@ -53,52 +54,39 @@ function SignUp({ change }) {
 
     validationSchema: validationSchema,
 
+    // onSubmit: async (values) => {
+    //   console.log(values);
+
+    //   axios
+    //     .post(`${base_url}/users`, values)
+    //     .then((res) => {
+    //       formik.resetForm();
+    //       alert("User created successfully, Confirmation email sent!");
+    //     })
+    //     .catch((err) => alert(`Some error occurred ==> ${err.message}`));
+    // },
+
     onSubmit: async (values) => {
       console.log(values);
 
-      axios
-        .post(`${base_url}/users`, values)
-        .then((res) => {
+      try {
+        const response = await axios.post(`${base_url}/users`, values);
+        const responseData = response.data;
+
+        if (response.status === 201) {
           formik.resetForm();
-          alert("User created successfully, Confirmation email sent!");
-        })
-        .catch((err) => alert(`Some error occurred ==> ${err.message}`));
+          setStatusMessages(responseData.message);
+          mail();
+        } else if (response.status === 400) {
+          setStatusMessages(responseData.message);
+        } else if (response.status === 500) {
+          setStatusMessages(responseData.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setStatusMessages("An error occurred while processing your request.");
+      }
     },
-
-    // try {
-    //   const response = await fetch("/api/users", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(values),
-    //   });
-
-    //   const result = await response.json();
-    //   switch (response.status) {
-    //     case 201:
-    //       setData(result.message);
-    //       mail();
-    //       break;
-    //     case 400:
-    //       setData(result.message);
-    //       break;
-    //     case 403:
-    //       setData(result.message);
-    //       break;
-    //     case 409:
-    //       setData(result.message);
-    //       break;
-    //     case 500:
-    //       setData(result.message);
-    //       break;
-    //     default:
-    //       setData("An error occurred while processing your request.");
-    //       break;
-    //   }
-    // } catch (error) {
-    //   console.log("Error sending data:", error);
-    // }
   });
 
   return (
@@ -170,8 +158,10 @@ function SignUp({ change }) {
           </form>
         </div>
         <div className="max-sm:mx-auto">
-          {data && (
-            <p className="text-center text-xs text-[red] mb-5">{data}</p>
+          {statusMessages && (
+            <p className="text-center text-xs text-[red] mb-5">
+              {statusMessages}
+            </p>
           )}
           <button
             type="Submit"
